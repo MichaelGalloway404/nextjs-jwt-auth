@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    const { rows } = await sql`SELECT * FROM users WHERE email = ${email}`;
+    const { rows } = await sql`SELECT * FROM usersX WHERE email = ${email}`;
     const user = rows[0];
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
