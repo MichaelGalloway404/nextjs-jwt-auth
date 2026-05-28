@@ -18,7 +18,6 @@ export async function POST(request: Request) {
       VALUES (${email}, ${hashedPassword})
     `;
 
-    alert("Success!");
     return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
   } catch (error: any) {
     // This logs the exact database issue directly to your terminal
