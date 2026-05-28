@@ -6,6 +6,11 @@ import bcrypt from 'bcryptjs';
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
+    
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Missing email or password' }, { status: 400 });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await sql`
@@ -13,8 +18,11 @@ export async function POST(request: Request) {
       VALUES (${email}, ${hashedPassword})
     `;
 
+    alert("Success!");
     return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
   } catch (error: any) {
-    return NextResponse.json({ error: 'User already exists or server error' }, { status: 400 });
+    // This logs the exact database issue directly to your terminal
+    console.error("Registration DB Error:", error);
+    return NextResponse.json({ error: error.message || 'Server error' }, { status: 400 });
   }
 }
